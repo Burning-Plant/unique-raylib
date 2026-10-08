@@ -5,6 +5,8 @@ enum anim {
 } anim;
 
 typedef struct Player {
+	Vector3 headOffset;
+
 	Vector3 position;
 	Vector3 velocity;
 	Vector3 direction;
