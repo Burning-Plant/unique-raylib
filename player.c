@@ -8,7 +8,7 @@ void populatePlayer(Player *instance,Camera * camera) {
 }
 
 void UpdatePlayer(Player *self, InputState input) {
-	//self->direction
+	//self->direction;
 
 	self->velocity = Vector3Add(self->velocity, Vector3Scale(input.direction,SPEED));
 	self->position = Vector3Add(self->position,self->velocity);
