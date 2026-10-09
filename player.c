@@ -3,6 +3,7 @@
 #define FRICTION 0.98
 #define HORIZANTAL_SENSITIVITY -0.0075
 #define VERTICAL_SENSITIVITY 0.01
+#define ANGLE_MAX 6.28319f //2 * Pi
 
 void populatePlayer(Player *instance,Camera * camera) {
 	*instance = (Player){ 0 };
@@ -28,8 +29,18 @@ void UpdatePlayer(Player *self, InputState input) {
 	float yawDelta = input.lookDelta.x * HORIZANTAL_SENSITIVITY;
 	float pitchDelta = input.lookDelta.y * VERTICAL_SENSITIVITY;
 
+	float pitchCap = Vector3Angle(self->direction,constUp);
+
 	self->direction = Vector3RotateByAxisAngle(self->direction,axisPitch,pitchDelta);
 	self->direction = Vector3RotateByAxisAngle(self->direction,constUp,yawDelta);
+
+
+	const Vector2 constForward = (Vector2){0, 1};
+	Vector2 flatDirection = (Vector2){self->direction.x,self->direction.z};
+
+	float theta = Vector2Angle(flatDirection,constForward);
+	input.direction = Vector3RotateByAxisAngle(input.direction, constUp,theta);
+
 
 	self->velocity = Vector3Add(self->velocity, Vector3Scale(input.direction,SPEED)); //TODO: align input direction to charecter yaw rotation, calculate from self->direction
 	self->position = Vector3Add(self->position,self->velocity);
